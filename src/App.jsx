@@ -61,7 +61,7 @@ function App() {
     <div className="inner-body">
       <h1> Welcome to my color palette website </h1>
 
-      <img className="example-palette" src={process.env.PUBLIC_URL + 'example.png'} />
+      <img className="example-palette" src={process.env.PUBLIC_URL + '/example.png'} />
       <div className="custom-form">
         <form  >
           <div className="form-group  required">
