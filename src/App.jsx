@@ -9,6 +9,10 @@ function App() {
 
   const [image, setImage] = useState();
 
+  const [data, setData] = useState();
+
+  const [loading, setLoading] = useState();
+
   function handleChange(event) {
     const { name, value } = event.target;
 
@@ -21,41 +25,45 @@ function App() {
     setImage(formData);
   }
 
-  function upload() {
-    axios
-      .post("https://color-palette-jb.herokuapp.com/api/settings", {
-        nb_colors: params.nb_colors,
-        delta: params.delta
-      })
-      .then((res) => {
-        console.log("Response: ", res);
-        if (res.data.success === true) {
-          axios
-            .post("https://color-palette-jb.herokuapp.com/api/upload", image, {
-              headers: {
-                "Content-Type": "multipart/form-data"
-              }
-            })
-            .then((res) => {
-              console.log(res);
-            });
+  async function sendUserParams() {
+    return axios({
+      method: "post",
+      url: "https://color-palette-jb.herokuapp.com/api/settings",
+      data: { nb_colors: params.nb_colors, delta: params.delta }
+    }).then((res) => res.data.success);
+  }
+
+  async function uploadImage() {
+    return axios
+      .post("https://color-palette-jb.herokuapp.com/api/upload", image, {
+        headers: {
+          "Content-Type": "multipart/form-data"
         }
-      });
+      })
+      .then((res) => res.data);
+  }
+
+  async function upload() {
+
+    setLoading(true);
+    setData(null);
+
+    const sentParams = await sendUserParams();
+
+    if (sentParams) {
+      const datas = await uploadImage();
+      setData(datas);
+      setLoading(false);
+    }
   }
 
   return (
     <div className="inner-body">
       <h1> Welcome to my color palette website </h1>
 
-      <img className="example-palette" src="/static/img/example.png" />
+      <img className="example-palette" src={process.env.PUBLIC_URL + 'example.png'} />
       <div className="custom-form">
-        <form
-          action=""
-          method="post"
-          className="form"
-          encType="multipart/form-data"
-          role="form"
-        >
+        <form  >
           <div className="form-group  required">
             <label className="control-label" htmlFor="image_file">
               Select an image to get his corresponding color palette
@@ -118,6 +126,47 @@ function App() {
           />
         </form>
       </div>
+
+      {loading && <h1>Loading ...</h1>}
+
+      {data && (
+        <div>
+          <div class="img-palette">
+            <div className="color-palette">
+              {data.color_palette.map((color) => (
+                <div
+                  class="color-place"
+                  style={{ backgroundColor: color }}
+                ></div>
+              ))}
+            </div>
+          </div>
+
+          <h1>Top 20 colors occurrences</h1>
+
+          <div class="all-colors container-fluid">
+            <div class="row">
+              {data.top_20_colors.map((color, index) => (
+                <div class="col-lg-4 col-sm-6 color-box">
+                  <div
+                    class="color-header"
+                    style={{ backgroundColor: color.hex }}
+                  >
+                    <div class="color-rank">{index + 1}</div>
+                  </div>
+
+                  <div class="color-body">
+                    <div class="color-details">
+                      <p>HEX: {color.hex}</p>
+                      <p>Ratio: {color.ratio}%</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
