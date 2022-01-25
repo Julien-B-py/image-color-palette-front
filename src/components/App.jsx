@@ -1,10 +1,37 @@
-import { useState } from "react";
+import { useState, useRef, useEffect, useLayoutEffect } from "react";
 import axios from "axios";
+import { gsap } from "gsap";
+
 import CircularProgress from "@mui/material/CircularProgress";
 import UserForm from "./UserForm";
 import Result from "./Result";
 
 function App() {
+  const headingsRef = useRef();
+  const sampleImgRef = useRef();
+
+  const q = gsap.utils.selector(headingsRef);
+
+  const tl = useRef();
+
+  const [animateFirst, setAnimateFirst] = useState();
+
+  useLayoutEffect(() => {
+    tl.current = gsap
+      .timeline({ onComplete: () => setAnimateFirst(true) })
+      .from(q("h1"), { autoAlpha: 0, yPercent: -100 })
+      .from(q("h2"), { autoAlpha: 0, yPercent: -100 })
+      .from(sampleImgRef.current, { scale: 0, ease: "Back.easeOut(1.2)" });
+  }, []);
+
+  function hideSampleImg() {
+    gsap.to(sampleImgRef.current, {
+      scale: 0,
+      duration: 0.5,
+      onComplete: () => upload()
+    });
+  }
+
   const [params, setParams] = useState({
     nb_colors: 10,
     delta: 24
@@ -16,19 +43,23 @@ function App() {
 
   const [loading, setLoading] = useState();
 
-
-
+  // Reset to upload another image
   function restart() {
+    // Clear all states
+    setData(null);
+    setLoading(null);
     setParams({
       nb_colors: 10,
       delta: 24
     });
     setImage(null);
-    setData(null);
-    setLoading(null);
+
+    // Allow form reappearance
+    setTimeout(function () {
+      setAnimateFirst(false);
+      setAnimateFirst(true);
+    }, 1000);
   }
-
-
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -76,27 +107,34 @@ function App() {
   return (
     <div className="main-content">
       <div className="main">
-        <h1>Image Color Palette Extractor</h1>
-      {!data ?   <h2>Select an image, adjust colors, delta and submit</h2>:<h2>Here is your color palette</h2>}
+        <div className="headings" ref={headingsRef}>
+          <h1>Image Color Palette Extractor</h1>
+          {!data ? (
+            <h2>Select an image, adjust colors, delta and submit</h2>
+          ) : (
+            <h2>Here is your color palette</h2>
+          )}
+        </div>
 
+        {!loading && !data && (
+          <img
+            ref={sampleImgRef}
+            className="example-palette"
+            src={process.env.PUBLIC_URL + "/example.png"}
+          />
+        )}
 
-      {!loading && !data && (
-        <img
-          className="example-palette"
-          src={process.env.PUBLIC_URL + "/example.png"}
-        />
-      )}
-
-      {!loading && !data && (
-        <UserForm
-          onTextChange={(e) => handleChange(e)}
-          onImageChange={(e) => handleImage(e)}
-          onUpload={upload}
-          params={params}
-          image={image}
-        />
-      )}
-
+        {!loading && !data && (
+          <UserForm
+            onTextChange={(e) => handleChange(e)}
+            onImageChange={(e) => handleImage(e)}
+            onUpload={upload}
+            params={params}
+            image={image}
+            animateFirst={animateFirst}
+            hideSampleImg={hideSampleImg}
+          />
+        )}
 
         {loading && (
           <div className="progress-container">
@@ -104,7 +142,7 @@ function App() {
           </div>
         )}
 
-        {data && <Result data={data} onRestart={restart}/>}
+        {data && <Result data={data} onRestart={restart} />}
       </div>
     </div>
   );
