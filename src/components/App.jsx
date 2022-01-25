@@ -79,25 +79,27 @@ function App() {
         <h1>Image Color Palette Extractor</h1>
       {!data ?   <h2>Select an image, adjust colors, delta and submit</h2>:<h2>Here is your color palette</h2>}
 
-        {!loading && !data && (
-          <img
-            className="example-palette"
-            src={process.env.PUBLIC_URL + "/example.png"}
-          />
-        )}
 
-        {!loading && !data && (
-          <UserForm
-            onTextChange={(e) => handleChange(e)}
-            onImageChange={(e) => handleImage(e)}
-            onUpload={upload}
-            params={params}
-            image={image}
-          />
-        )}
+      {!loading && !data && (
+        <img
+          className="example-palette"
+          src={process.env.PUBLIC_URL + "/example.png"}
+        />
+      )}
+
+      {!loading && !data && (
+        <UserForm
+          onTextChange={(e) => handleChange(e)}
+          onImageChange={(e) => handleImage(e)}
+          onUpload={upload}
+          params={params}
+          image={image}
+        />
+      )}
+
 
         {loading && (
-          <div>
+          <div className="progress-container">
             <CircularProgress />
           </div>
         )}

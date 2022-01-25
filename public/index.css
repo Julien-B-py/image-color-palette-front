@@ -33,7 +33,7 @@ img {
 .main-content {
   margin: 0 auto;
   min-height: 100vh;
-  display: flex;
+  /* display: flex; */
 }
 
 .main {
@@ -42,6 +42,7 @@ img {
   margin: auto;
   flex-direction: column;
   padding-top: 3rem;
+  min-height: 100vh;
 }
 
 /*** HOME PAGE ***/
@@ -54,11 +55,13 @@ img {
 #image_file {
   margin: auto;
   padding: 10px 0;
+  max-width: 90%;
 }
 
 .custom-form {
   margin-bottom: 3rem;
-  width: 80%;
+  width: min(80%, 500px);
+  overflow: hidden;
 }
 
 .custom-form form {
@@ -198,6 +201,12 @@ form button {
   text-align: center;
   top: 10px;
   width: 40px;
+}
+
+.progress-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
 }
 
 .color-body {
