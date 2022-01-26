@@ -7,6 +7,7 @@ import Heading from "./Heading";
 import SampleImg from "./SampleImg";
 import UserForm from "./UserForm";
 import Result from "./Result";
+import Footer from "./Footer";
 
 function App() {
 
@@ -86,39 +87,46 @@ const [submitImage, setSubmitImage] = useState(false);
   }
 
   return (
-    <div className="main-content">
+
       <div className="main">
 
-      <Heading timeline={tlInit}  data={data}/>
+<div className="content">
+<Heading timeline={tlInit}  data={data}/>
 
 
-        {!loading && !data && (
+  {!loading && !data && (
 <SampleImg timeline={tlInit}           timelineHide={tlAfterSubmit}             submitImage={submitImage} onUpload={upload}/>
-        )}
+  )}
 
-        {!loading && !data && (
-          <UserForm timeline={tlInit}
-          timelineHide={tlAfterSubmit}
-            onTextChange={(e) => handleChange(e)}
-            onImageChange={(e) => handleImage(e)}
-            onUpload={upload}
-            params={params}
-            image={image}
-            submitImage={submitImage}
-            onImageSubmit={()=> setSubmitImage(true)}
+  {!loading && !data && (
+    <UserForm timeline={tlInit}
+    timelineHide={tlAfterSubmit}
+      onTextChange={(e) => handleChange(e)}
+      onImageChange={(e) => handleImage(e)}
+      onUpload={upload}
+      params={params}
+      image={image}
+      submitImage={submitImage}
+      onImageSubmit={()=> setSubmitImage(true)}
 
-          />
-        )}
+    />
+  )}
 
-        {loading && (
-          <div className="progress-container">
-            <CircularProgress />
-          </div>
-        )}
-
-        {data && <Result data={data} onRestart={restart} />}
-      </div>
+  {loading && (
+    <div className="progress-container">
+      <CircularProgress />
     </div>
+  )}
+
+  {data && <Result data={data} onRestart={restart} />}
+</div>
+
+
+              <Footer/>
+
+      </div>
+
+
   );
 }
 
