@@ -1,36 +1,21 @@
-import { useState, useRef, useEffect, useLayoutEffect } from "react";
+import { useState,  } from "react";
 import axios from "axios";
 import { gsap } from "gsap";
 
 import CircularProgress from "@mui/material/CircularProgress";
+import Heading from "./Heading";
+import SampleImg from "./SampleImg";
 import UserForm from "./UserForm";
 import Result from "./Result";
 
 function App() {
-  const headingsRef = useRef();
-  const sampleImgRef = useRef();
 
-  const q = gsap.utils.selector(headingsRef);
+// Starting animation timeline
+const [tlInit, setTlInit] = useState(() => gsap.timeline());
+// After image submit animation timeline
+const [tlAfterSubmit, setTlAfterSubmit] = useState(() => gsap.timeline());
 
-  const tl = useRef();
-
-  const [animateFirst, setAnimateFirst] = useState();
-
-  useLayoutEffect(() => {
-    tl.current = gsap
-      .timeline({ onComplete: () => setAnimateFirst(true) })
-      .from(q("h1"), { autoAlpha: 0, yPercent: -100 })
-      .from(q("h2"), { autoAlpha: 0, yPercent: -100 })
-      .from(sampleImgRef.current, { scale: 0, ease: "Back.easeOut(1.2)" });
-  }, []);
-
-  function hideSampleImg() {
-    gsap.to(sampleImgRef.current, {
-      scale: 0,
-      duration: 0.5,
-      onComplete: () => upload()
-    });
-  }
+const [submitImage, setSubmitImage] = useState(false);
 
   const [params, setParams] = useState({
     nb_colors: 10,
@@ -53,12 +38,8 @@ function App() {
       delta: 24
     });
     setImage(null);
+    setSubmitImage(false);
 
-    // Allow form reappearance
-    setTimeout(function () {
-      setAnimateFirst(false);
-      setAnimateFirst(true);
-    }, 1000);
   }
 
   function handleChange(event) {
@@ -107,32 +88,25 @@ function App() {
   return (
     <div className="main-content">
       <div className="main">
-        <div className="headings" ref={headingsRef}>
-          <h1>Image Color Palette Extractor</h1>
-          {!data ? (
-            <h2>Select an image, adjust colors, delta and submit</h2>
-          ) : (
-            <h2>Here is your color palette</h2>
-          )}
-        </div>
+
+      <Heading timeline={tlInit}  data={data}/>
+
 
         {!loading && !data && (
-          <img
-            ref={sampleImgRef}
-            className="example-palette"
-            src={process.env.PUBLIC_URL + "/example.png"}
-          />
+<SampleImg timeline={tlInit}           timelineHide={tlAfterSubmit}             submitImage={submitImage} onUpload={upload}/>
         )}
 
         {!loading && !data && (
-          <UserForm
+          <UserForm timeline={tlInit}
+          timelineHide={tlAfterSubmit}
             onTextChange={(e) => handleChange(e)}
             onImageChange={(e) => handleImage(e)}
             onUpload={upload}
             params={params}
             image={image}
-            animateFirst={animateFirst}
-            hideSampleImg={hideSampleImg}
+            submitImage={submitImage}
+            onImageSubmit={()=> setSubmitImage(true)}
+
           />
         )}
 

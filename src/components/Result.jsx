@@ -1,3 +1,5 @@
+import { gsap } from "gsap";
+
 import Button from "@mui/material/Button";
 
 function Result(props) {

@@ -11,18 +11,12 @@ function UserForm(props) {
 
   const [buttonAnim, setButtonAnim] = useState(false);
 
-  const tl = gsap
-    .timeline({ paused: true })
-    .to(q(".single-input"), { autoAlpha: 1, stagger: 0.3 });
-
-  // Animate form after headings and example image animation is over
+  // Animate form inputs appearance
   useLayoutEffect(() => {
-    if (props.animateFirst) {
-      tl.play();
-    }
-  }, [props.animateFirst]);
+    props.timeline.from(q(".single-input"), { autoAlpha: 0, stagger: 0.3 });
+  }, []);
 
-  // Animate submit button
+  // Animate submit button appearance
   useLayoutEffect(() => {
     if (props.image && !buttonAnim) {
       gsap.from(submitRef.current, { autoAlpha: 0, yPercent: 100 });
@@ -30,13 +24,12 @@ function UserForm(props) {
     }
   }, [props.image]);
 
-  function hideFormThenUpload() {
-    gsap
-      .timeline({ onComplete: props.hideSampleImg })
-      .to(submitRef.current, { autoAlpha: 0, duration: 0.1 })
-      .to(q(".single-input"), { autoAlpha: 0, stagger: -0.1 });
-    // props.onUpload()
-  }
+  // Animate submit button and user inputs disappearance after click on submit
+  useLayoutEffect(() => {
+    props.timelineHide
+      .to(q(".single-input"), { autoAlpha: 0 }, "<")
+      .to(submitRef.current, { autoAlpha: 0 }, "<");
+  }, [props.submitImage]);
 
   return (
     <div className="custom-form">
@@ -83,7 +76,7 @@ function UserForm(props) {
 
         {props.image && (
           <div className="submit-container" ref={submitRef}>
-            <Button variant="contained" onClick={hideFormThenUpload}>
+            <Button variant="contained" onClick={() => props.onImageSubmit()}>
               Submit image
             </Button>
           </div>

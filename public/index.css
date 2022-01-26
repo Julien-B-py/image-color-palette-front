@@ -49,7 +49,6 @@ img {
 .example-palette {
   display: block;
   margin: 3rem 0;
-
 }
 
 /*** CUSTOM FORM ***/
@@ -69,21 +68,11 @@ img {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-
-
 }
-
-
-
-.single-input {
-visibility: hidden;
-}
-
 
 .submit-container {
   width: max-content;
 }
-
 
 form button {
   width: 10rem;
