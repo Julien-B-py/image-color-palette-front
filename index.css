@@ -30,18 +30,15 @@ img {
 }
 
 /*** INNER BODY SECTION ***/
-.main-content {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-}
+
 
 .main {
   display: flex;
   align-items: center;
   margin: auto;
   flex-direction: column;
-  padding-top: 3rem;
+padding: 3rem 0.5rem 0;
+  min-height: 100vh;
 }
 
 /*** HOME PAGE ***/
@@ -54,17 +51,23 @@ img {
 #image_file {
   margin: auto;
   padding: 10px 0;
+  max-width: 90%;
 }
 
 .custom-form {
   margin-bottom: 3rem;
-  width: 80%;
+  width: min(80%, 500px);
+  overflow: hidden;
 }
 
 .custom-form form {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+}
+
+.submit-container {
+  width: max-content;
 }
 
 form button {
@@ -200,6 +203,12 @@ form button {
   width: 40px;
 }
 
+.progress-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
 .color-body {
   display: flex;
   margin-top: 18px;
@@ -207,4 +216,26 @@ form button {
 
 .color-details {
   margin-left: 30px;
+}
+
+footer {
+  padding: 2rem;
+  color: #777777;
+  text-align: center;
+}
+
+footer a {
+  text-decoration: none;
+  color: #777777;
+}
+
+footer a:hover {
+  color: #555555;
+}
+
+.content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }

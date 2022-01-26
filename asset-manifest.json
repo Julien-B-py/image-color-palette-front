@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/image-color-palette-front/static/js/main.2a62bcd1.js",
+    "main.js": "/image-color-palette-front/static/js/main.f8cd5b40.js",
     "index.html": "/image-color-palette-front/index.html",
-    "main.2a62bcd1.js.map": "/image-color-palette-front/static/js/main.2a62bcd1.js.map"
+    "main.f8cd5b40.js.map": "/image-color-palette-front/static/js/main.f8cd5b40.js.map"
   },
   "entrypoints": [
-    "static/js/main.2a62bcd1.js"
+    "static/js/main.f8cd5b40.js"
   ]
 }
