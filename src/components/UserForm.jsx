@@ -9,6 +9,7 @@ function UserForm(props) {
   const submitRef = useRef();
   const q = gsap.utils.selector(formRef);
 
+  // Memorize that submit button disappearance already have been animated
   const [buttonAnim, setButtonAnim] = useState(false);
 
   // Animate form inputs appearance
@@ -26,7 +27,7 @@ function UserForm(props) {
 
   // Animate submit button and user inputs disappearance after click on submit
   useLayoutEffect(() => {
-    props.timelineHide
+    props.submitImage && props.timelineHide
       .to(q(".single-input"), { autoAlpha: 0 }, "<")
       .to(submitRef.current, { autoAlpha: 0 }, "<");
   }, [props.submitImage]);
@@ -45,17 +46,12 @@ function UserForm(props) {
           />
         </div>
 
-        {props.params.file && (
-          <div className="preview-global">
-            <img className="preview" />
-            <i className="fas fa-trash-alt"></i>
-          </div>
-        )}
+
 
         <div className="user-settings">
           <TextField
             className="single-input"
-            label="Number of colors (5-10)"
+            label="Colors (5-10)"
             type="number"
             name="nb_colors"
             value={props.params.nb_colors}

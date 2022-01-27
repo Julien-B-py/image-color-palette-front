@@ -1,9 +1,7 @@
 import { useRef, useLayoutEffect } from "react";
-import { gsap } from "gsap";
 
 function SampleImg(props) {
   const sampleImgRef = useRef();
-
 
   // Animate sample img appearance
   useLayoutEffect(() => {
@@ -12,7 +10,6 @@ function SampleImg(props) {
       ease: "Back.easeOut(1.2)"
     });
   }, []);
-
 
   // Animate sample img disappearance and trigger upload when done
   useLayoutEffect(() => {
@@ -28,6 +25,7 @@ function SampleImg(props) {
       ref={sampleImgRef}
       className="example-palette"
       src={process.env.PUBLIC_URL + "/example.png"}
+      alt="Example palette"
     />
   );
 }

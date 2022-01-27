@@ -5,6 +5,7 @@ function Heading(props) {
   const headingsRef = useRef();
   const q = gsap.utils.selector(headingsRef);
 
+  // Animate headings appearance
   useLayoutEffect(() => {
     props.timeline
       .from(q("h1"), { autoAlpha: 0, yPercent: -100 })
