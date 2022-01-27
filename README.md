@@ -1,3 +1,17 @@
+# Image Color Palette Extractor
+
+This project was about building a front-end using React for an existing project I made 3 months ago : 
+
+https://github.com/Julien-B-py/Image-Colour-Palette-Generator
+
+User just needs to select an image, define how many colors the palette should contain and the delta between 2 colors. 
+
+Press submit button and the app will do the rest.
+
+![alt text](https://i.imgur.com/YF8FmaY.png)
+
+Deployed and hosted version available here: [https://julien-b-py.github.io/image-color-palette-front/](https://julien-b-py.github.io/image-color-palette-front/)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
