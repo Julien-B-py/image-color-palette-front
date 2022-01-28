@@ -245,6 +245,7 @@ footer a:hover {
 
 .error {
   width: min(95%, 500px);
+  max-width: max-content;
 }
 
 @media screen and (min-width: 640px) {
