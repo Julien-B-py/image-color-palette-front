@@ -43,8 +43,7 @@ img {
 .example-palette {
   display: block;
   margin: 0 0 2rem;
-width: 23vh;
-
+  width: 23vh;
 }
 
 /*** CUSTOM FORM ***/
@@ -105,7 +104,7 @@ form button {
 /*** IMG WITH COLOR PALETTE ***/
 .result {
   text-align: center;
-  overflow:hidden;
+  overflow: hidden;
 }
 
 .img-palette-container {
@@ -244,16 +243,17 @@ footer a:hover {
   width: 100%;
 }
 
-
+.error {
+  width: min(95%, 500px);
+  max-width: max-content;
+}
 
 @media screen and (min-width: 640px) {
+  .example-palette {
+    width: auto;
+  }
 
-.example-palette {
-  width: auto;
-}
-
-.color-palette {
-  height: 50px;
-}
-
+  .color-palette {
+    height: 50px;
+  }
 }
