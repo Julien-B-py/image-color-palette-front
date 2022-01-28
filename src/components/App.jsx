@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useLayoutEffect } from "react";
 import axios from "axios";
 import { gsap } from "gsap";
 
@@ -12,6 +12,8 @@ import Result from "./Result";
 import Footer from "./Footer";
 
 function App() {
+  const errorRef = useRef();
+
   const [error, setError] = useState();
 
   // Starting animation timeline
@@ -47,7 +49,7 @@ function App() {
 
   // Saves user inputs changes
   function handleChange(event) {
-    setError();
+    HideErrorMsg();
     const { name, value } = event.target;
 
     setParams((oldParams) => ({ ...params, [name]: Number(value) }));
@@ -55,7 +57,7 @@ function App() {
 
   // Saves selected image data on change
   function handleImage(event) {
-    setError();
+    HideErrorMsg();
     const formData = new FormData();
     formData.append("my-image-file", event.target.files[0]);
     setImage(formData);
@@ -104,6 +106,23 @@ function App() {
     }
   }
 
+  // Error msg animation on render
+  useLayoutEffect(() => {
+    error &&
+      gsap.from(errorRef.current, {
+        autoAlpha: 0,
+        yPercent: -100
+      });
+  }, [error]);
+
+  // Hide error message
+  function HideErrorMsg() {
+    gsap.to(errorRef.current, {
+      autoAlpha: 0,
+      onComplete: () => setError()
+    });
+  }
+
   return (
     <div className="main">
       <div className="content">
@@ -119,7 +138,7 @@ function App() {
         )}
 
         {error && (
-          <div className="error">
+          <div className="modal-msg" ref={errorRef}>
             <Alert variant="filled" severity="error">
               Error {error.status} —{" "}
               {error.data.includes("<p>")

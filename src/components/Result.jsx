@@ -1,13 +1,18 @@
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-import { useRef, useLayoutEffect } from "react";
+import { useRef, useLayoutEffect, useState, useEffect } from "react";
 
+import Alert from "@mui/material/Alert";
 import Button from "@mui/material/Button";
 
 function Result(props) {
   const tl = useRef();
   const el = useRef();
+
+  const successRef = useRef();
+  // Used to handle successful copy message visibility and animation
+  const [copiedColor, setCopiedColor] = useState();
 
   useLayoutEffect(() => {
     const q = gsap.utils.selector(el);
@@ -46,6 +51,32 @@ function Result(props) {
       .from(q("h1"), { autoAlpha: 0, yPercent: 100 });
   }, []);
 
+  // Successful clipboard copy msg animation on render
+  useLayoutEffect(() => {
+    copiedColor &&
+      gsap.from(successRef.current, {
+        autoAlpha: 0,
+        yPercent: -100
+      });
+  }, [copiedColor]);
+
+  // Copy the clicked color from the palette to the clipboard
+  function copyColor(color) {
+    navigator.clipboard.writeText(color.toUpperCase());
+    setCopiedColor(color.toUpperCase());
+    HideAlertMsg();
+  }
+
+  // Hide success message after 3 seconds
+  function HideAlertMsg() {
+    setTimeout(function () {
+      gsap.to(successRef.current, {
+        autoAlpha: 0,
+        onComplete: () => setCopiedColor()
+      });
+    }, 3000);
+  }
+
   return (
     <div className="result" ref={el}>
       <div className="img-palette-container">
@@ -62,10 +93,19 @@ function Result(props) {
                 key={index}
                 className="color-place"
                 style={{ backgroundColor: color }}
+                onClick={() => copyColor(color)}
               ></div>
             ))}
           </div>
         </div>
+
+        {copiedColor && (
+          <div className="modal-msg" ref={successRef}>
+            <Alert variant="filled" severity="success">
+              {`Successfully copied ${copiedColor} to the clipboard.`}
+            </Alert>
+          </div>
+        )}
 
         <div className="s-button">
           <Button variant="contained" onClick={props.onRestart}>

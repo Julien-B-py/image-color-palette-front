@@ -56,6 +56,7 @@ function UserForm(props) {
             value={props.params.nb_colors}
             onChange={props.onTextChange}
             variant="outlined"
+            inputProps={{ min: 5, max: 10 }}
           />
 
           <TextField
@@ -66,6 +67,7 @@ function UserForm(props) {
             value={props.params.delta}
             onChange={props.onTextChange}
             variant="outlined"
+            inputProps={{ min: 1, max: 255 }}
           />
         </div>
 
