@@ -27,9 +27,10 @@ function UserForm(props) {
 
   // Animate submit button and user inputs disappearance after click on submit
   useLayoutEffect(() => {
-    props.submitImage && props.timelineHide
-      .to(q(".single-input"), { autoAlpha: 0 }, "<")
-      .to(submitRef.current, { autoAlpha: 0 }, "<");
+    props.submitImage &&
+      props.timelineHide
+        .to(q(".single-input"), { autoAlpha: 0 }, "<")
+        .to(submitRef.current, { autoAlpha: 0 }, "<");
   }, [props.submitImage]);
 
   return (
@@ -45,8 +46,6 @@ function UserForm(props) {
             onChange={props.onImageChange}
           />
         </div>
-
-
 
         <div className="user-settings">
           <TextField

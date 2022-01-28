@@ -3,6 +3,7 @@ import axios from "axios";
 import { gsap } from "gsap";
 
 import CircularProgress from "@mui/material/CircularProgress";
+import Alert from "@mui/material/Alert";
 
 import Heading from "./Heading";
 import SampleImg from "./SampleImg";
@@ -11,6 +12,8 @@ import Result from "./Result";
 import Footer from "./Footer";
 
 function App() {
+  const [error, setError] = useState();
+
   // Starting animation timeline
   const [tlInit, setTlInit] = useState(() => gsap.timeline());
   // After image submit animation timeline
@@ -44,6 +47,7 @@ function App() {
 
   // Saves user inputs changes
   function handleChange(event) {
+    setError();
     const { name, value } = event.target;
 
     setParams((oldParams) => ({ ...params, [name]: Number(value) }));
@@ -51,6 +55,7 @@ function App() {
 
   // Saves selected image data on change
   function handleImage(event) {
+    setError();
     const formData = new FormData();
     formData.append("my-image-file", event.target.files[0]);
     setImage(formData);
@@ -73,7 +78,14 @@ function App() {
           "Content-Type": "multipart/form-data"
         }
       })
-      .then((res) => res.data);
+      .then((res) => res.data)
+      .catch((err) => {
+        setSubmitImage(false);
+        setImage();
+        setLoading();
+
+        setError(err.response);
+      });
   }
 
   // Upload function
@@ -106,13 +118,23 @@ function App() {
           />
         )}
 
+        {error && (
+          <div className="error">
+            <Alert variant="filled" severity="error">
+              Error {error.status} —{" "}
+              {error.data.includes("<p>")
+                ? error.data.split("<p>")[1].split("</p>")[0]
+                : error.data}
+            </Alert>
+          </div>
+        )}
+
         {!loading && !data && (
           <UserForm
             timeline={tlInit}
             timelineHide={tlAfterSubmit}
             onTextChange={(e) => handleChange(e)}
             onImageChange={(e) => handleImage(e)}
-            onUpload={upload}
             params={params}
             image={image}
             submitImage={submitImage}
