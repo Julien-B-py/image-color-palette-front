@@ -1,10 +1,63 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
-
+import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 
 function UserForm(props) {
+
+  // Inputs props
+  const deltaInputProps = {
+    label: "Delta (1-255)",
+    name: "delta",
+    value: props.params.delta,
+    inputProps: { min: 1, max: 255 }
+  };
+
+  const nbColorsInputProps = {
+    label: "Colors (5-10)",
+    name: "nb_colors",
+    value: props.params.nb_colors,
+    inputProps: { min: 5, max: 10 }
+  };
+
+  const commonInputProps = {
+    className: "single-input",
+    type: "number",
+    onChange: props.onTextChange,
+    variant: "outlined"
+  };
+
+  // Custom Textfield component for dark mode
+  const CssTextField = styled(TextField)({
+    "& label.Mui-focused": {
+      color: "rgba(255, 255, 255, 0.60)"
+    },
+    "& label.MuiFormLabel-filled": {
+      color: "rgba(255, 255, 255, 0.60)"
+    },
+
+    "& .MuiInputBase-root": {
+      color: "rgba(255, 255, 255, 0.60)"
+    },
+
+    "& .MuiInput-underline:after": {
+      borderBottomColor: "rgba(255, 255, 255, 0.87)"
+    },
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        borderColor: "rgba(255, 255, 255, 0.87)"
+      },
+      "&:hover fieldset": {
+        borderColor: "#2f75bc"
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: "#3b75b0"
+      }
+    }
+  });
+
+  // Create elements ref for animation
   const formRef = useRef();
   const submitRef = useRef();
   const q = gsap.utils.selector(formRef);
@@ -38,6 +91,7 @@ function UserForm(props) {
       <form ref={formRef}>
         <div className="form-group  required">
           <input
+            style={props.theme && { color: "rgba(255,255,255,.60)" }}
             className="single-input"
             id="image_file"
             name="image_file"
@@ -48,27 +102,17 @@ function UserForm(props) {
         </div>
 
         <div className="user-settings">
-          <TextField
-            className="single-input"
-            label="Colors (5-10)"
-            type="number"
-            name="nb_colors"
-            value={props.params.nb_colors}
-            onChange={props.onTextChange}
-            variant="outlined"
-            inputProps={{ min: 5, max: 10 }}
-          />
+          {props.theme ? (
+            <CssTextField {...nbColorsInputProps} {...commonInputProps} />
+          ) : (
+            <TextField {...nbColorsInputProps} {...commonInputProps} />
+          )}
 
-          <TextField
-            className="single-input"
-            label="Delta (1-255)"
-            type="number"
-            name="delta"
-            value={props.params.delta}
-            onChange={props.onTextChange}
-            variant="outlined"
-            inputProps={{ min: 1, max: 255 }}
-          />
+          {props.theme ? (
+            <CssTextField {...deltaInputProps} {...commonInputProps} />
+          ) : (
+            <TextField {...deltaInputProps} {...commonInputProps} />
+          )}
         </div>
 
         {props.image && (

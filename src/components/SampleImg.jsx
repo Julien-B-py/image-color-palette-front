@@ -36,18 +36,22 @@ function SampleImg(props) {
   }, [props.submitImage]);
 
   return (
-    <div className="img-palette" ref={sampleImgRef}>
+    <div
+      className="img-palette"
+      ref={sampleImgRef}
+      style={{ borderColor: props.theme && "rgba(255,255,255,.87)" }}
+    >
       <img
         className="resized-img"
         src={process.env.PUBLIC_URL + "/example.jpg"}
         alt="Submitted"
+        style={{ borderColor: props.theme && "rgba(255,255,255,.87)" }}
       />
 
       <div className="color-palette">
         {colors.map((color, index) => (
-          <Tooltip title={color} placement="top">
+          <Tooltip title={color} placement="top" key={index}>
             <div
-              key={index}
               className="color-place"
               style={{ backgroundColor: color }}
             ></div>

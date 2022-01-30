@@ -80,9 +80,13 @@ function Result(props) {
   return (
     <div className="result" ref={el}>
       <div className="img-palette-container">
-        <div className="img-palette">
+        <div
+          className="img-palette"
+          style={{ borderColor: props.theme && "rgba(255,255,255,.87)" }}
+        >
           <img
             className="resized-img"
+            style={{ borderColor: props.theme && "rgba(255,255,255,.87)" }}
             src={`data:image/jpeg;base64,${props.data.img_data}`}
             alt="Submitted"
           />
@@ -113,23 +117,61 @@ function Result(props) {
           </Button>
         </div>
       </div>
-      <h1>Top 20 colors occurrences</h1>
+      <h1
+        style={
+          props.theme && { color: "rgba(255,255,255,.87)", fontWeight: 500 }
+        }
+      >
+        Top 20 colors occurrences
+      </h1>
 
       <div className="all-colors container-fluid">
         <div className="row">
           {props.data.top_20_colors.map((color, index) => (
-            <div key={index} className="col-lg-4 col-sm-6 color-box">
+            <div
+              key={index}
+              className="col-lg-4 col-sm-6 color-box"
+              style={props.theme && { borderColor: "rgba(255,255,255,.87)" }}
+            >
               <div
                 className="color-header"
-                style={{ backgroundColor: color.hex }}
+                style={{
+                  backgroundColor: color.hex,
+                  borderColor: props.theme && "rgba(255,255,255,.87)"
+                }}
               >
-                <div className="color-rank">{index + 1}</div>
+                <div
+                  className="color-rank"
+                  style={
+                    props.theme && {
+                      color: "rgba(255,255,255,.87)",
+                      backgroundColor: "#121212"
+                    }
+                  }
+                >
+                  {index + 1}
+                </div>
               </div>
 
               <div className="color-body">
-                <div className="color-details">
-                  <p>HEX: {color.hex}</p>
-                  <p>Ratio: {color.ratio}%</p>
+                <div
+                  className="color-details"
+                  style={props.theme && { color: "rgba(255,255,255,.87)" }}
+                >
+                  <p
+                    style={
+                      props.theme ? { fontWeight: 500 } : { fontWeight: 600 }
+                    }
+                  >
+                    HEX: {color.hex}
+                  </p>
+                  <p
+                    style={
+                      props.theme ? { fontWeight: 500 } : { fontWeight: 600 }
+                    }
+                  >
+                    Ratio: {color.ratio}%
+                  </p>
                 </div>
               </div>
             </div>

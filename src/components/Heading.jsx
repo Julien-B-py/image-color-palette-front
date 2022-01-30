@@ -13,7 +13,11 @@ function Heading(props) {
   }, []);
 
   return (
-    <div className="headings" ref={headingsRef}>
+    <div
+      className="headings"
+      ref={headingsRef}
+      style={props.theme && { color: "rgba(255,255,255,.87)", fontWeight: 500 }}
+    >
       <h1>
         <i className="fas fa-palette"></i> Image Color Palette Extractor
       </h1>

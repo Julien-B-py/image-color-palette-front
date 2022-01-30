@@ -2,8 +2,11 @@ import { useState, useRef, useLayoutEffect } from "react";
 import axios from "axios";
 import { gsap } from "gsap";
 
+import { styled } from "@mui/material/styles";
+
 import CircularProgress from "@mui/material/CircularProgress";
 import Alert from "@mui/material/Alert";
+import Tooltip from "@mui/material/Tooltip";
 
 import Heading from "./Heading";
 import SampleImg from "./SampleImg";
@@ -12,10 +15,10 @@ import Result from "./Result";
 import Footer from "./Footer";
 
 function App() {
-  const errorRef = useRef();
-
+  // State used to toggle dark mode
+  const [theme, setTheme] = useState();
+  // Errors
   const [error, setError] = useState();
-
   // Starting animation timeline
   const [tlInit, setTlInit] = useState(() => gsap.timeline());
   // After image submit animation timeline
@@ -34,6 +37,9 @@ function App() {
   // Allow loading animation display during image processing by the server
   const [loading, setLoading] = useState();
 
+
+  // Toggle theme function
+  const toggleTheme = () => (theme ? setTheme() : setTheme(true));
   // Reset everything to upload another image
   function restart() {
     // Clear all states
@@ -49,15 +55,14 @@ function App() {
 
   // Saves user inputs changes
   function handleChange(event) {
-    HideErrorMsg();
+    error && HideErrorMsg();
     const { name, value } = event.target;
-
     setParams((oldParams) => ({ ...params, [name]: Number(value) }));
   }
 
   // Saves selected image data on change
   function handleImage(event) {
-    HideErrorMsg();
+    error && HideErrorMsg();
     const formData = new FormData();
     formData.append("my-image-file", event.target.files[0]);
     setImage(formData);
@@ -106,6 +111,8 @@ function App() {
     }
   }
 
+  const errorRef = useRef();
+
   // Error msg animation on render
   useLayoutEffect(() => {
     error &&
@@ -124,9 +131,21 @@ function App() {
   }
 
   return (
-    <div className="main">
+    <div className="main" style={theme && { backgroundColor: "#121212" }}>
       <div className="content">
-        <Heading timeline={tlInit} data={data} />
+        <Tooltip title="Toggle dark mode" placement="left">
+          <div className="theme-toggler" onClick={toggleTheme}>
+            {theme ? (
+              <i
+                className="fas fa-sun"
+                style={{ color: "rgba(255,255,255,.87)" }}
+              ></i>
+            ) : (
+              <i className="fas fa-moon"></i>
+            )}
+          </div>
+        </Tooltip>
+        <Heading timeline={tlInit} data={data} theme={theme} />
 
         {!loading && !data && (
           <SampleImg
@@ -134,6 +153,7 @@ function App() {
             timelineHide={tlAfterSubmit}
             submitImage={submitImage}
             onUpload={upload}
+            theme={theme}
           />
         )}
 
@@ -159,6 +179,7 @@ function App() {
             image={image}
             submitImage={submitImage}
             onImageSubmit={() => setSubmitImage(true)}
+            theme={theme}
           />
         )}
 
@@ -168,7 +189,7 @@ function App() {
           </div>
         )}
 
-        {data && <Result data={data} onRestart={restart} />}
+        {data && <Result data={data} onRestart={restart} theme={theme} />}
       </div>
 
       <Footer />
