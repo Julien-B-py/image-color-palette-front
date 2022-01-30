@@ -14,7 +14,9 @@ function Heading(props) {
 
   return (
     <div className="headings" ref={headingsRef}>
-      <h1>Image Color Palette Extractor</h1>
+      <h1>
+        <i className="fas fa-palette"></i> Image Color Palette Extractor
+      </h1>
       {!props.data ? (
         <h2>Select an image, adjust colors, delta and submit</h2>
       ) : (

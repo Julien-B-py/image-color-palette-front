@@ -1,7 +1,7 @@
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-import { useRef, useLayoutEffect, useState, useEffect } from "react";
+import { useRef, useLayoutEffect, useState } from "react";
 
 import Alert from "@mui/material/Alert";
 import Button from "@mui/material/Button";
@@ -100,7 +100,7 @@ function Result(props) {
         </div>
 
         {copiedColor && (
-          <div className="modal-msg" ref={successRef}>
+          <div className="snackbar fixed" ref={successRef}>
             <Alert variant="filled" severity="success">
               {`Successfully copied ${copiedColor} to the clipboard.`}
             </Alert>

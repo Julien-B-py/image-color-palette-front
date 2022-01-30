@@ -145,7 +145,7 @@ form button {
   cursor: pointer;
 }
 
-.modal-msg {
+.snackbar {
   position: absolute;
   top: 5px;
   left: 0;
@@ -154,6 +154,15 @@ form button {
   margin: 0 auto;
   max-width: max-content;
   width: 97%;
+}
+
+.single-input {
+  flex-grow: 1;
+}
+
+.fixed {
+  position: fixed;
+  z-index: 80;
 }
 
 /*** TOP 20 INDIVIDUAL COLORS SECTION ***/

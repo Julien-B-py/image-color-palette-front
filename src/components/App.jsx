@@ -138,12 +138,13 @@ function App() {
         )}
 
         {error && (
-          <div className="modal-msg" ref={errorRef}>
+          <div className="snackbar" ref={errorRef}>
             <Alert variant="filled" severity="error">
-              Error {error.status} —{" "}
-              {error.data.includes("<p>")
-                ? error.data.split("<p>")[1].split("</p>")[0]
-                : error.data}
+              {`Error ${error.status} - ${
+                error.data.includes("<p>")
+                  ? error.data.split("<p>")[1].split("</p>")[0]
+                  : error.data
+              }`}
             </Alert>
           </div>
         )}
