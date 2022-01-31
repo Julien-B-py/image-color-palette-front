@@ -1,4 +1,4 @@
-import { useState, useRef, useLayoutEffect } from "react";
+import { useState, useRef, useLayoutEffect, useEffect } from "react";
 import axios from "axios";
 import { gsap } from "gsap";
 
@@ -37,9 +37,8 @@ function App() {
   // Allow loading animation display during image processing by the server
   const [loading, setLoading] = useState();
 
-
   // Toggle theme function
-  const toggleTheme = () => (theme ? setTheme() : setTheme(true));
+  const toggleTheme = () => setTheme(!theme);
   // Reset everything to upload another image
   function restart() {
     // Clear all states
@@ -122,6 +121,16 @@ function App() {
       });
   }, [error]);
 
+  // Recover stored theme value to retrieve user preference
+  useEffect(() => {
+    setTheme(JSON.parse(window.localStorage.getItem("theme")));
+  }, []);
+
+  // Store theme current value on change
+  useEffect(() => {
+    window.localStorage.setItem("theme", theme);
+  }, [theme]);
+
   // Hide error message
   function HideErrorMsg() {
     gsap.to(errorRef.current, {
@@ -131,7 +140,7 @@ function App() {
   }
 
   return (
-    <div className="main" style={theme && { backgroundColor: "#121212" }}>
+    <div className="main" style={theme ? { backgroundColor: "#121212" } : {}}>
       <div className="content">
         <Tooltip title="Toggle dark mode" placement="left">
           <div className="theme-toggler" onClick={toggleTheme}>

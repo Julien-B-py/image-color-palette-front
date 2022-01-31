@@ -82,11 +82,11 @@ function Result(props) {
       <div className="img-palette-container">
         <div
           className="img-palette"
-          style={{ borderColor: props.theme && "rgba(255,255,255,.87)" }}
+          style={props.theme ? { borderColor: "rgba(255,255,255,.87)" } : {}}
         >
           <img
             className="resized-img"
-            style={{ borderColor: props.theme && "rgba(255,255,255,.87)" }}
+            style={props.theme ? { borderColor: "rgba(255,255,255,.87)" } : {}}
             src={`data:image/jpeg;base64,${props.data.img_data}`}
             alt="Submitted"
           />
@@ -119,7 +119,7 @@ function Result(props) {
       </div>
       <h1
         style={
-          props.theme && { color: "rgba(255,255,255,.87)", fontWeight: 500 }
+          props.theme ? { color: "rgba(255,255,255,.87)", fontWeight: 500 } : {}
         }
       >
         Top 20 colors occurrences
@@ -131,7 +131,9 @@ function Result(props) {
             <div
               key={index}
               className="col-lg-4 col-sm-6 color-box"
-              style={props.theme && { borderColor: "rgba(255,255,255,.87)" }}
+              style={
+                props.theme ? { borderColor: "rgba(255,255,255,.87)" } : {}
+              }
             >
               <div
                 className="color-header"
@@ -143,10 +145,12 @@ function Result(props) {
                 <div
                   className="color-rank"
                   style={
-                    props.theme && {
-                      color: "rgba(255,255,255,.87)",
-                      backgroundColor: "#121212"
-                    }
+                    props.theme
+                      ? {
+                          color: "rgba(255,255,255,.87)",
+                          backgroundColor: "#121212"
+                        }
+                      : {}
                   }
                 >
                   {index + 1}
@@ -156,7 +160,7 @@ function Result(props) {
               <div className="color-body">
                 <div
                   className="color-details"
-                  style={props.theme && { color: "rgba(255,255,255,.87)" }}
+                  style={props.theme ? { color: "rgba(255,255,255,.87)" } : {}}
                 >
                   <p
                     style={

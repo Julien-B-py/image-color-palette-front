@@ -5,7 +5,6 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 
 function UserForm(props) {
-
   // Inputs props
   const deltaInputProps = {
     label: "Delta (1-255)",
@@ -91,7 +90,7 @@ function UserForm(props) {
       <form ref={formRef}>
         <div className="form-group  required">
           <input
-            style={props.theme && { color: "rgba(255,255,255,.60)" }}
+            style={props.theme ? { color: "rgba(255,255,255,.60)" } : {}}
             className="single-input"
             id="image_file"
             name="image_file"

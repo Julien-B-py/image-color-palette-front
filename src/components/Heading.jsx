@@ -16,9 +16,9 @@ function Heading(props) {
     <div
       className="headings"
       ref={headingsRef}
-      style={props.theme && { color: "rgba(255,255,255,.87)", fontWeight: 500 }}
+      style={props.theme ? { color: "rgba(255,255,255,.87)" } : {}}
     >
-      <h1>
+      <h1 style={props.theme ? { fontWeight: 500 } : {}}>
         <i className="fas fa-palette"></i> Image Color Palette Extractor
       </h1>
       {!props.data ? (
